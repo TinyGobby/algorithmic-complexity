@@ -33,16 +33,36 @@ package org.sample;
 
 import org.openjdk.jmh.annotations.*;
 import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.io.*;
 
 public class MyBenchmark {
-    @Benchmark@BenchmarkMode(Mode.AverageTime) @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    public void testMethod() {
-        doMagic();
-    }
-    public static void doMagic() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ignored) {
+
+    @State(Scope.Benchmark)
+    public static class MyState {
+
+        @Setup(Level.Iteration)
+        public void doSetup() {
+            for (int i = 0; i < 10; i++) {
+            list.add(i);
+            }
+//            System.out.println();
+//            System.out.println("Setup complete");
         }
+        @TearDown(Level.Iteration)
+        public void doTearDown() {
+//            System.out.println("Teardown complete");
+        }
+        public ArrayList<Integer> list = new ArrayList<Integer>();
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.NANOSECONDS)
+    @Fork(value = 1)
+    @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.MICROSECONDS)
+    @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.MICROSECONDS)
+    public void testMethod(MyState state) {
+        Collections.reverse(state.list);
     }
 }
