@@ -43,15 +43,13 @@ public class MyBenchmark {
 
         @Setup(Level.Iteration)
         public void doSetup() {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10000; i++) {
             list.add(i);
             }
-//            System.out.println();
-//            System.out.println("Setup complete");
         }
         @TearDown(Level.Iteration)
         public void doTearDown() {
-//            System.out.println("Teardown complete");
+            list.clear();
         }
         public ArrayList<Integer> list = new ArrayList<Integer>();
     }
@@ -60,8 +58,8 @@ public class MyBenchmark {
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     @Fork(value = 1)
-    @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.MICROSECONDS)
-    @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.MICROSECONDS)
+    @Warmup(iterations = 20, time = 50, timeUnit = TimeUnit.MILLISECONDS)
+    @Measurement(iterations = 100, time = 50, timeUnit = TimeUnit.MILLISECONDS)
     public void testMethod(MyState state) {
         Collections.reverse(state.list);
     }
