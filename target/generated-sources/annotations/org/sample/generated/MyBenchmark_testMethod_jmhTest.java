@@ -508,6 +508,10 @@ public final class MyBenchmark_testMethod_jmhTest {
                 return val;
             }
             val = new MyBenchmark_MyState_jmhType();
+            Field f;
+            f = org.sample.MyBenchmark.MyState.class.getDeclaredField("array_size");
+            f.setAccessible(true);
+            f.set(val, Integer.valueOf(control.getParam("array_size")));
             val.readyTrial = true;
             f_mystate1_G = val;
             } catch (Throwable t) {

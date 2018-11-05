@@ -36,15 +36,32 @@ import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.io.*;
 
+/*
+To build:
+cd test
+mvn clean install
+
+To run:
+java -jar target/benchmarks.jar -rf csv
+
+Output will be in test/jmg-result.csv
+
+To see samples with various uses:
+http://hg.openjdk.java.net/code-tools/jmh/file/06c8e8aa576b/jmh-samples/src/main/java/org/openjdk/jmh/samples/
+ */
 public class MyBenchmark {
 
     @State(Scope.Benchmark)
     public static class MyState {
 
+        // Update parameters to set array sizes, each parameter will be listed on a separate line in the results
+        @Param({"1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"})
+        public int array_size;
+
         @Setup(Level.Iteration)
         public void doSetup() {
-            for (int i = 0; i < 6000; i++) {
-            list.add(i);
+            for (int i = 0; i < array_size; i++) {
+                list.add((int) (Math.random() * 1000));
             }
         }
         @TearDown(Level.Iteration)
@@ -56,14 +73,16 @@ public class MyBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS) //
     @Fork(value = 1)
     @Warmup(iterations = 20, time = 5, timeUnit = TimeUnit.MILLISECONDS)
     @Measurement(iterations = 100, time = 5, timeUnit = TimeUnit.MILLISECONDS)
     public void testMethod(MyState state) {
-        state.list.get(state.list.size()-1); // Last
-//        Collections.reverst(state.list); // Reverse
-//        Collections.shuffle(state.list); // Shuffle
+        // Code to be tested goes here, or uncomment the below to test ArrayList methods:
+
+//        state.list.get(state.list.size()-1); // Last
+//        Collections.reverse(state.list); // Reverse
+        Collections.shuffle(state.list); // Shuffle
 //        Collections.sort(state.list); // Sort
     }
 }
