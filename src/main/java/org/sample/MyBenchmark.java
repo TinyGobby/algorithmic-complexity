@@ -43,7 +43,7 @@ public class MyBenchmark {
 
         @Setup(Level.Iteration)
         public void doSetup() {
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < 6000; i++) {
             list.add(i);
             }
         }
@@ -58,9 +58,12 @@ public class MyBenchmark {
     @BenchmarkMode(Mode.AverageTime)
     @OutputTimeUnit(TimeUnit.NANOSECONDS)
     @Fork(value = 1)
-    @Warmup(iterations = 20, time = 50, timeUnit = TimeUnit.MILLISECONDS)
-    @Measurement(iterations = 100, time = 50, timeUnit = TimeUnit.MILLISECONDS)
+    @Warmup(iterations = 20, time = 5, timeUnit = TimeUnit.MILLISECONDS)
+    @Measurement(iterations = 100, time = 5, timeUnit = TimeUnit.MILLISECONDS)
     public void testMethod(MyState state) {
-        Collections.reverse(state.list);
+        state.list.get(state.list.size()-1); // Last
+//        Collections.reverst(state.list); // Reverse
+//        Collections.shuffle(state.list); // Shuffle
+//        Collections.sort(state.list); // Sort
     }
 }
