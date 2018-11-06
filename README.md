@@ -16,7 +16,6 @@ Results can be printed in a .csv file for easy graphing
 
 ## To Build/Compile
 ```
-cd test
 mvn clean install
 ```
 
