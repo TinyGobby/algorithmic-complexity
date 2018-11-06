@@ -84,7 +84,7 @@ public class MyBenchmark {
 
 //        state.list.get(state.list.size()-1); // Last
 //        Collections.reverse(state.list); // Reverse
-//        Collections.shuffle(state.list); // Shuffle
-        Collections.sort(state.list); // Sort
+        Collections.shuffle(state.list); // Shuffle
+//        Collections.sort(state.list); // Sort
     }
 }
